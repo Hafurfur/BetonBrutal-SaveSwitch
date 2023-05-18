@@ -1,7 +1,5 @@
 import pathlib
 import subprocess
-import os
-import time
 
 from settings import GAME_LOCATION_EXE, GAME_PROCESS
 
