@@ -1,26 +1,38 @@
+import logging
 import pathlib
-
-from settings import SAVE_LOCATION, SAVE_FILE
+import os
 import shutil
+from settings import SAVE_LOCATION, STEAM_FLAG
 
 
 class Switcher:
     def __init__(self):
+        self.save_loc: str = os.environ['SAVE_LOCATION'] if STEAM_FLAG == 'Y' else SAVE_LOCATION
         self._create_copay_save_file()
 
-    @staticmethod
-    def _create_copay_save_file():
-        orig_file_path = pathlib.Path(SAVE_LOCATION, 'copy_save.dat')
-        open(orig_file_path, 'a').close()
+    def _create_copay_save_file(self):
+        try:
+            open(pathlib.Path(self.save_loc, 'copy_save.dat'), 'a').close()
+        except Exception:
+            logging.exception('Failed to create a save copy file')
+            raise
 
-    @staticmethod
-    def new_save():
-        orig_file_path = pathlib.Path(SAVE_LOCATION, SAVE_FILE)
-        copy_file_path = pathlib.Path(SAVE_LOCATION, 'copy_save.dat')
-        shutil.copy2(orig_file_path, copy_file_path)
+    def new_save(self):
+        try:
+            shutil.copy2(pathlib.Path(self.save_loc, 'Stats.dat'), pathlib.Path(self.save_loc, 'copy_save.dat'))
+        except Exception:
+            logging.exception('Failed to create a copy of the save')
+            raise
+        print(f'--> Save copy')
 
-    @staticmethod
-    def load_save():
-        orig_file_path = pathlib.Path(SAVE_LOCATION, SAVE_FILE)
-        copy_file_path = pathlib.Path(SAVE_LOCATION, 'copy_save.dat')
-        shutil.copy2(copy_file_path, orig_file_path)
+    def load_save(self):
+        try:
+            shutil.copy2(pathlib.Path(self.save_loc, 'copy_save.dat'), pathlib.Path(self.save_loc, 'Stats.dat'))
+        except Exception:
+            logging.exception("Couldn't load a copy of the save")
+            raise
+        print(f'--> Save load')
+
+
+if __name__ == '__main__':
+    pass

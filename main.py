@@ -1,8 +1,14 @@
 from src.save_switcher import Switcher
 from src.game_procestion import GameProc
+from src.search_path import SearchPaths
+from settings import STEAM_FLAG
+import src.logger
 
 
 def start():
+    if STEAM_FLAG == 'Y':
+        SearchPaths.search_path()
+
     switcher = Switcher()
     game = GameProc()
     print(f'1. Copy save file \n2. Load copy save')
@@ -10,11 +16,9 @@ def start():
         inp = input()
         if inp == '1':
             switcher.new_save()
-            print(f'Save copy')
         elif inp == '2':
             switcher.load_save()
-            print(f'Save load')
-            game.game_star()
+            game.star_game()
         else:
             print(f'Wrong input value')
 
