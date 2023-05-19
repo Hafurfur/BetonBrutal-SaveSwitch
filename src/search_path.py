@@ -19,7 +19,7 @@ class SearchPaths:
     @classmethod
     def _steam_loc_search(cls):
         try:
-            hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\WOW6432Node\Valve\Steam1')
+            hkey = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, 'SOFTWARE\WOW6432Node\Valve\Steam')
         except FileNotFoundError:
             logging.exception('Steam not found')
             raise
